@@ -1,14 +1,15 @@
-import React, { useRef } from "react";
-import { Search, Filter } from "lucide-react";
-import { useAnimations } from "../hooks/useAnimations";
+import React, { useRef } from 'react';
+import { Search, Filter } from 'lucide-react';
+import { useAnimations } from '../hooks/useAnimations';
 
-const SearchBar = ({
-  filters,
-  onFilterChange,
-  onSearch,
-  showFilters,
-  onToggleFilters,
+const SearchBar = ({ 
+  filters, 
+  onFilterChange, 
+  onSearch, 
+  showFilters, 
+  onToggleFilters, 
   isSearching = false,
+  onClearFilters 
 }) => {
   const searchButtonRef = useRef(null);
   const filterButtonRef = useRef(null);
@@ -29,12 +30,12 @@ const SearchBar = ({
   };
 
   const handleClearFilters = () => {
-    onFilterChange("titulo", "");
-    onFilterChange("empresa_id", "");
-    onFilterChange("salario_min", "");
-    onFilterChange("salario_max", "");
-    onFilterChange("ordenar_por", "fecha_publicacion");
-    onFilterChange("orden", "DESC");
+    onFilterChange('titulo', '');
+    onFilterChange('empresa_id', '');
+    onFilterChange('salario_min', '');
+    onFilterChange('salario_max', '');
+    onFilterChange('ordenar_por', 'fecha_publicacion');
+    onFilterChange('orden', 'DESC');
   };
 
   return (
@@ -54,7 +55,7 @@ const SearchBar = ({
                 placeholder="Buscar por título del empleo... (búsqueda automática)"
                 className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300 focus:shadow-lg"
                 value={filters.titulo}
-                onChange={(e) => onFilterChange("titulo", e.target.value)}
+                onChange={(e) => onFilterChange('titulo', e.target.value)}
               />
             </div>
             {filters.titulo && (
@@ -63,10 +64,13 @@ const SearchBar = ({
                   <span className="inline-block w-2 h-2 bg-blue-600 rounded-full mr-2 animate-pulse"></span>
                   Filtrando por: "{filters.titulo}"
                 </p>
+                <span className="text-xs text-green-600 bg-green-100 px-2 py-1 rounded-full">
+                  🚀 Búsqueda optimizada
+                </span>
               </div>
             )}
           </div>
-
+          
           <button
             ref={filterButtonRef}
             type="button"
@@ -74,9 +78,9 @@ const SearchBar = ({
             className="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2 transition-all duration-200 hover:shadow-md transform hover:scale-105 active:scale-95"
           >
             <Filter className="w-5 h-5" />
-            Filtros {showFilters ? "▲" : "▼"}
+            Filtros {showFilters ? '▲' : '▼'}
           </button>
-
+          
           <button
             ref={searchButtonRef}
             onClick={handleSearchClick}
@@ -97,10 +101,10 @@ const SearchBar = ({
                 placeholder="Ej: 1000000"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                 value={filters.salario_min}
-                onChange={(e) => onFilterChange("salario_min", e.target.value)}
+                onChange={(e) => onFilterChange('salario_min', e.target.value)}
               />
             </div>
-
+            
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Salario máximo
@@ -110,10 +114,10 @@ const SearchBar = ({
                 placeholder="Ej: 5000000"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                 value={filters.salario_max}
-                onChange={(e) => onFilterChange("salario_max", e.target.value)}
+                onChange={(e) => onFilterChange('salario_max', e.target.value)}
               />
             </div>
-
+            
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Ordenar por
@@ -121,14 +125,14 @@ const SearchBar = ({
               <select
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                 value={filters.ordenar_por}
-                onChange={(e) => onFilterChange("ordenar_por", e.target.value)}
+                onChange={(e) => onFilterChange('ordenar_por', e.target.value)}
               >
                 <option value="fecha_publicacion">Fecha de publicación</option>
                 <option value="salario">Salario</option>
                 <option value="titulo">Título</option>
               </select>
             </div>
-
+            
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Orden
@@ -136,17 +140,17 @@ const SearchBar = ({
               <select
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                 value={filters.orden}
-                onChange={(e) => onFilterChange("orden", e.target.value)}
+                onChange={(e) => onFilterChange('orden', e.target.value)}
               >
                 <option value="DESC">Descendente</option>
                 <option value="ASC">Ascendente</option>
               </select>
             </div>
-
+            
             {/* Botón para limpiar filtros */}
             <div className="md:col-span-2 lg:col-span-4 pt-2">
               <button
-                onClick={handleClearFilters}
+                onClick={onClearFilters || handleClearFilters}
                 className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors"
               >
                 🗑️ Limpiar todos los filtros

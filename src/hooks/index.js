@@ -1,4 +1,8 @@
-// Exportaciones centralizadas de hooks
 export { useAnimations } from './useAnimations';
 export { useDebounce } from './useDebounce';
 export { useJobs } from './useJobs';
+export { useJobModal } from './useJobModal';
+export { useSearchFilters } from './useSearchFilters';
+export { useAppAnimations } from './useAppAnimations';
+export { usePagination } from './usePagination';
+export { useJobPortal } from './useJobPortal';
