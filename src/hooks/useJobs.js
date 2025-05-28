@@ -1,13 +1,12 @@
 import { useState, useCallback } from 'react';
 import { jobsAPI } from '../services/jobsApi';
 
-// Hook personalizado para manejar empleos con búsqueda optimizada
 export const useJobs = () => {
-  const [allJobs, setAllJobs] = useState([]); // Todos los empleos cargados
-  const [filteredJobs, setFilteredJobs] = useState([]); // Empleos filtrados localmente
+  const [allJobs, setAllJobs] = useState([]); 
+  const [filteredJobs, setFilteredJobs] = useState([]); 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [lastServerFilters, setLastServerFilters] = useState({}); // Últimos filtros usados en servidor
+  const [lastServerFilters, setLastServerFilters] = useState({}); 
   const [pagination, setPagination] = useState({
     total: 0,
     totalPages: 0,
@@ -15,7 +14,6 @@ export const useJobs = () => {
     limit: 10
   });
 
-  // Función para búsqueda local (solo por título)
   const searchLocally = useCallback((jobs, searchTerm) => {
     if (!searchTerm || searchTerm.trim() === '') {
       return jobs;
@@ -27,11 +25,9 @@ export const useJobs = () => {
     );
   }, []);
 
-  // Función para determinar si necesitamos consultar el servidor
   const needsServerQuery = useCallback((newFilters) => {
     const serverFilters = ['salario_min', 'salario_max', 'empresa_id', 'ordenar_por', 'orden'];
     
-    // Si algún filtro del servidor cambió, necesitamos consultar
     return serverFilters.some(filter => 
       newFilters[filter] !== lastServerFilters[filter]
     );
@@ -40,7 +36,6 @@ export const useJobs = () => {
   const fetchJobs = useCallback(async (params = {}) => {
     const { titulo, ...serverParams } = params;
     
-    // Verificar si necesitamos consultar el servidor
     const needsServer = needsServerQuery(serverParams) || allJobs.length === 0;
     
     if (needsServer) {
@@ -54,7 +49,6 @@ export const useJobs = () => {
         setAllJobs(data.empleos || []);
         setLastServerFilters(serverParams);
         
-        // Aplicar filtro de título localmente
         const filtered = searchLocally(data.empleos || [], titulo);
         setFilteredJobs(filtered);
         
@@ -71,7 +65,6 @@ export const useJobs = () => {
         setLoading(false);
       }
     } else {
-      // Solo búsqueda local por título
       console.log('🔍 Búsqueda local para:', titulo);
       const filtered = searchLocally(allJobs, titulo);
       setFilteredJobs(filtered);
@@ -85,14 +78,12 @@ export const useJobs = () => {
     }
   }, [allJobs.length, needsServerQuery, searchLocally]);
 
-  // Función para obtener jobs paginados
   const getPaginatedJobs = useCallback((page = 1, limit = 10) => {
     const startIndex = (page - 1) * limit;
     const endIndex = startIndex + limit;
     return filteredJobs.slice(startIndex, endIndex);
   }, [filteredJobs]);
 
-  // Función para obtener información de empresa (nueva)
   const fetchCompany = useCallback(async (companyId) => {
     try {
       return await jobsAPI.getCompanyById(companyId);
@@ -104,13 +95,13 @@ export const useJobs = () => {
 
   return { 
     jobs: getPaginatedJobs(pagination.currentPage, pagination.limit),
-    allJobs: filteredJobs, // Para debugging
+    allJobs: filteredJobs, 
     loading, 
     error, 
     pagination, 
     fetchJobs,
     getPaginatedJobs,
-    fetchCompany // Nueva función exportada
+    fetchCompany 
   };
 };
 

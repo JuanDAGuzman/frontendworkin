@@ -147,7 +147,6 @@ const SearchBar = ({
               </select>
             </div>
             
-            {/* Botón para limpiar filtros */}
             <div className="md:col-span-2 lg:col-span-4 pt-2">
               <button
                 onClick={onClearFilters || handleClearFilters}

@@ -9,29 +9,24 @@ const Pagination = ({ pagination, onPageChange }) => {
     const currentPage = pagination.currentPage;
     const totalPages = pagination.totalPages;
 
-    // Si hay 7 páginas o menos, mostrar todas
     if (totalPages <= 7) {
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
       }
     } else {
-      // Lógica para mostrar páginas con elipsis
       if (currentPage <= 4) {
-        // Mostrar 1, 2, 3, 4, 5, ..., última
         for (let i = 1; i <= 5; i++) {
           pages.push(i);
         }
         pages.push('...');
         pages.push(totalPages);
       } else if (currentPage >= totalPages - 3) {
-        // Mostrar 1, ..., última-4, última-3, última-2, última-1, última
         pages.push(1);
         pages.push('...');
         for (let i = totalPages - 4; i <= totalPages; i++) {
           pages.push(i);
         }
       } else {
-        // Mostrar 1, ..., actual-1, actual, actual+1, ..., última
         pages.push(1);
         pages.push('...');
         for (let i = currentPage - 1; i <= currentPage + 1; i++) {
@@ -47,7 +42,6 @@ const Pagination = ({ pagination, onPageChange }) => {
 
   return (
     <div className="flex justify-center items-center mt-8 space-x-2">
-      {/* Botón anterior */}
       <button
         onClick={() => onPageChange(pagination.currentPage - 1)}
         disabled={pagination.currentPage === 1}
@@ -57,7 +51,6 @@ const Pagination = ({ pagination, onPageChange }) => {
         <ChevronLeft className="w-5 h-5" />
       </button>
       
-      {/* Números de página */}
       {renderPageNumbers().map((page, index) => {
         if (page === '...') {
           return (
@@ -84,7 +77,6 @@ const Pagination = ({ pagination, onPageChange }) => {
         );
       })}
       
-      {/* Botón siguiente */}
       <button
         onClick={() => onPageChange(pagination.currentPage + 1)}
         disabled={pagination.currentPage === pagination.totalPages}
@@ -94,7 +86,6 @@ const Pagination = ({ pagination, onPageChange }) => {
         <ChevronRight className="w-5 h-5" />
       </button>
 
-      {/* Info de paginación */}
       <div className="ml-4 text-sm text-gray-600">
         Página {pagination.currentPage} de {pagination.totalPages} 
         <span className="hidden sm:inline">

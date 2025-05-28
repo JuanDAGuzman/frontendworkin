@@ -1,7 +1,6 @@
 import { useState, useCallback } from 'react';
 
-// Simulación de Popmotion (reemplaza con la importación real)
-// import { animate } from 'popmotion';
+
 const animate = (from, to, options = {}) => {
   const { duration = 500, onUpdate, onComplete } = options;
   const startTime = Date.now();
@@ -23,7 +22,6 @@ const animate = (from, to, options = {}) => {
   requestAnimationFrame(tick);
 };
 
-// Hook personalizado para manejar animaciones
 export const useAnimations = () => {
   const [isVisible, setIsVisible] = useState(false);
   
@@ -37,7 +35,7 @@ export const useAnimations = () => {
       animate(0, 1, {
         duration: 600,
         onUpdate: (value) => {
-          if (element) {  // Verificar que el elemento aún existe
+          if (element) {  
             element.style.opacity = value;
             element.style.transform = `translateY(${20 * (1 - value)}px)`;
           }

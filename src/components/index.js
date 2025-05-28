@@ -1,4 +1,3 @@
-// Exportaciones centralizadas de componentes
 export { default as JobCard } from './JobCard';
 export { default as SearchBar } from './SearchBar';
 export { default as Pagination } from './Pagination';

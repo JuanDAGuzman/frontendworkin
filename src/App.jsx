@@ -7,64 +7,55 @@ import {
   Sidebar, 
   JobModal 
 } from './components';
+import Navbar from './components/Navbar';
 
 const App = () => {
-  // Un solo hook que maneja toda la lógica del portal
   const {
-    // Estados
     jobs,
     loading,
     error,
     pagination,
+    
     selectedJob,
     isModalOpen,
+    
     filters,
     showFilters,
     isSearchingLocally,
     
-    // Funciones
+    user,
+    userType,
+    isAuthenticated,
+    authLoading,
+    
     openJobModal,
     closeJobModal,
     switchToJob,
+    
     handleFilterChange,
     handleSearch,
     toggleFilters,
     clearFilters,
     handlePageChange,
     
-    // Referencias
+    logout,
+    simulateLogin,
+    
     headerRef
   } = useJobPortal();
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header con animación */}
-      <header 
-        ref={headerRef}
-        className="bg-white shadow-sm border-b"
-        style={{ opacity: 0, transform: 'translateY(-20px)' }}
-      >
-        <div className="max-w-6xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
-                WorkIn
-              </h1>
-            </div>
-            <div className="text-sm text-gray-600">
-              <span className="hidden sm:inline">Total: </span>
-              <span className="font-medium text-blue-600">
-                {pagination.total || 0}
-              </span>
-              <span className="hidden sm:inline"> empleos disponibles</span>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Navbar
+        user={user}
+        userType={userType}
+        isAuthenticated={isAuthenticated}
+        onLogin={simulateLogin} 
+        onLogout={logout}
+        totalJobs={pagination.total}
+      />
 
-      {/* Contenido principal */}
       <div className="max-w-6xl mx-auto px-4 py-6">
-        {/* Barra de búsqueda */}
         <SearchBar
           filters={filters}
           onFilterChange={handleFilterChange}
@@ -75,11 +66,8 @@ const App = () => {
           onClearFilters={clearFilters}
         />
 
-        {/* Grid principal */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Lista de empleos */}
           <div className="lg:col-span-2">
-            {/* Estado de carga */}
             {loading && (
               <div className="bg-white rounded-lg shadow-sm p-8 text-center">
                 <div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full mx-auto mb-4"></div>
@@ -88,7 +76,6 @@ const App = () => {
               </div>
             )}
 
-            {/* Estado de error */}
             {error && (
               <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-4">
                 <div className="flex items-center mb-3">
@@ -105,7 +92,6 @@ const App = () => {
               </div>
             )}
 
-            {/* Estado sin resultados */}
             {!loading && !error && (!jobs || jobs.length === 0) && (
               <div className="bg-white rounded-lg shadow-sm p-8 text-center">
                 <div className="text-6xl mb-4">🔍</div>
@@ -127,7 +113,6 @@ const App = () => {
               </div>
             )}
 
-            {/* Lista de empleos */}
             {!loading && !error && jobs && jobs.length > 0 && (
               <>
                 <div className="space-y-4 mb-6">
@@ -141,7 +126,6 @@ const App = () => {
                   ))}
                 </div>
 
-                {/* Componente de paginación */}
                 {pagination.totalPages > 1 && (
                   <Pagination 
                     pagination={pagination} 
@@ -152,14 +136,12 @@ const App = () => {
             )}
           </div>
 
-          {/* Sidebar */}
           <div className="lg:col-span-1">
             <Sidebar pagination={pagination} />
           </div>
         </div>
       </div>
 
-      {/* Modal de detalles */}
       <JobModal 
         job={selectedJob}
         isOpen={isModalOpen}
@@ -171,3 +153,4 @@ const App = () => {
 };
 
 export default App;
+

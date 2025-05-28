@@ -4,6 +4,7 @@ import { useJobModal } from './useJobModal';
 import { useSearchFilters } from './useSearchFilters';
 import { useAppAnimations } from './useAppAnimations';
 import { usePagination } from './usePagination';
+import { useAuth } from './useAuth';
 
 export const useJobPortal = () => {
   const { jobs, loading, error, pagination, fetchJobs } = useJobs();
@@ -31,17 +32,31 @@ export const useJobPortal = () => {
   
   const { handlePageChange } = usePagination(fetchJobs, filters, debouncedTitulo);
 
+  const {
+    user,
+    token,
+    userType,
+    loading: authLoading,
+    isAuthenticated,
+    login,
+    logout,
+    simulateLogin
+  } = useAuth();
+
   useEffect(() => {
     console.log('🚀 Cargando empleos iniciales...');
     fetchJobs({ page: 1, limit: 10 });
-  }, []);
+  }, []); 
 
   console.log('🔍 Estado del portal:', {
     jobs: jobs?.length || 0,
     loading,
     error,
     pagination,
-    filters
+    filters,
+    user: user?.nombre,
+    userType,
+    isAuthenticated
   });
 
   return {
@@ -57,6 +72,12 @@ export const useJobPortal = () => {
     showFilters,
     isSearchingLocally,
     
+    user,
+    token,
+    userType,
+    authLoading,
+    isAuthenticated,
+    
     fetchJobs,
     
     openJobModal,
@@ -69,6 +90,10 @@ export const useJobPortal = () => {
     clearFilters,
     
     handlePageChange,
+    
+    login,
+    logout,
+    simulateLogin,
     
     headerRef
   };

@@ -6,14 +6,12 @@ const JobCard = ({ job, index, onViewDetails }) => {
   const cardRef = useRef(null);
   const buttonRef = useRef(null);
 
-  // Animación simple sin hook para evitar loops
   useEffect(() => {
     if (cardRef.current) {
       const element = cardRef.current;
       element.style.opacity = '0';
       element.style.transform = 'translateY(20px)';
       
-      // Timeout simple para animación
       setTimeout(() => {
         element.style.transition = 'all 0.6s ease-out';
         element.style.opacity = '1';
@@ -23,7 +21,6 @@ const JobCard = ({ job, index, onViewDetails }) => {
   }, [index]);
 
   const handleButtonClick = () => {
-    // Animación simple del botón
     if (buttonRef.current) {
       const button = buttonRef.current;
       button.style.transform = 'scale(0.95)';

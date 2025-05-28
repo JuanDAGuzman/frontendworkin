@@ -1,10 +1,8 @@
 import { useEffect, useRef } from 'react';
 
-// Hook para manejar animaciones de la aplicación principal
 export const useAppAnimations = () => {
   const headerRef = useRef(null);
 
-  // Animación simple de entrada para header
   const animateHeader = () => {
     if (headerRef.current) {
       const element = headerRef.current;
@@ -19,7 +17,6 @@ export const useAppAnimations = () => {
     }
   };
 
-  // Ejecutar animación de header al montar
   useEffect(() => {
     animateHeader();
   }, []);

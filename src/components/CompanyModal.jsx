@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { X, Building2, Calendar, Star, Briefcase } from 'lucide-react';
 import { formatDate } from '../utils/formatters';
 
-// Función para hacer la petición directamente (sin hook que cause loops)
 const fetchCompanyData = async (companyId) => {
   try {
     const API_BASE_URL = 'http://localhost:5000/api';
@@ -49,7 +48,6 @@ const CompanyModal = ({ companyId, isOpen, onClose, companyName, onViewJob }) =>
   const modalRef = useRef(null);
   const backdropRef = useRef(null);
 
-  // Función simple de animación sin hook
   const animateIn = (element, delay = 0) => {
     if (!element) return;
     
@@ -63,7 +61,6 @@ const CompanyModal = ({ companyId, isOpen, onClose, companyName, onViewJob }) =>
     }, delay);
   };
 
-  // Cargar datos de la empresa cuando se abre el modal
   useEffect(() => {
     if (isOpen && companyId) {
       loadCompanyData();
@@ -93,7 +90,6 @@ const CompanyModal = ({ companyId, isOpen, onClose, companyName, onViewJob }) =>
     }
   };
 
-  // Animaciones de entrada y salida
   useEffect(() => {
     if (isOpen && modalRef.current && backdropRef.current) {
       animateIn(backdropRef.current, 0);
@@ -115,7 +111,6 @@ const CompanyModal = ({ companyId, isOpen, onClose, companyName, onViewJob }) =>
     console.log('👁️ Viewing job from company modal:', job);
     console.log('🔍 Job data from company modal (partial):', job);
     
-    // Añadir un efecto visual de transición
     const currentModal = modalRef.current;
     if (currentModal) {
       currentModal.style.transition = 'all 0.3s ease-out';
@@ -124,12 +119,10 @@ const CompanyModal = ({ companyId, isOpen, onClose, companyName, onViewJob }) =>
     }
     
     try {
-      // Intentar obtener los datos completos del empleo por ID específico
       console.log('🔄 Trying to fetch complete job data for job ID:', job.id);
       
       const API_BASE_URL = 'http://localhost:5000/api';
       
-      // Opción 1: Intentar endpoint específico /jobs/:id
       let completeJob = null;
       
       try {
@@ -142,7 +135,6 @@ const CompanyModal = ({ companyId, isOpen, onClose, companyName, onViewJob }) =>
         console.log('⚠️ /jobs/:id endpoint not available, trying fallback');
       }
       
-      // Opción 2: Fallback - buscar en la lista general de empleos
       if (!completeJob) {
         console.log('🔄 Using fallback: searching in jobs list');
         
@@ -158,21 +150,18 @@ const CompanyModal = ({ companyId, isOpen, onClose, companyName, onViewJob }) =>
         }
       }
       
-      // Usar los datos completos si los encontramos, sino usar los parciales
       const jobToShow = completeJob || {
         ...job,
-        nombre_empresa: companyName, // Añadir el nombre de empresa que tenemos
-        salario: job.salario || null, // Mantener salario si existe
-        requisitos: job.requisitos || null, // Mantener requisitos si existen
+        nombre_empresa: companyName,
+        salario: job.salario || null,
+        requisitos: job.requisitos || null, 
       };
       
       console.log('📄 Final job data to show:', jobToShow);
       
-      // Cerrar el modal de empresa
       setTimeout(() => {
         handleClose();
         
-        // Llamar la función con los mejores datos disponibles
         if (onViewJob) {
           onViewJob(jobToShow);
         }
@@ -181,7 +170,6 @@ const CompanyModal = ({ companyId, isOpen, onClose, companyName, onViewJob }) =>
     } catch (error) {
       console.error('❌ Error fetching complete job data:', error);
       
-      // En caso de error, usar los datos que tenemos y añadir info de empresa
       const fallbackJob = {
         ...job,
         nombre_empresa: companyName,
@@ -218,7 +206,6 @@ const CompanyModal = ({ companyId, isOpen, onClose, companyName, onViewJob }) =>
         onClick={(e) => e.stopPropagation()}
         style={{ opacity: 0, transform: 'translateY(20px)' }}
       >
-        {/* Header */}
         <div className="sticky top-0 bg-white border-b border-gray-200 p-6 rounded-t-xl">
           <div className="flex justify-between items-start">
             <div className="flex items-center space-x-3">
@@ -241,9 +228,7 @@ const CompanyModal = ({ companyId, isOpen, onClose, companyName, onViewJob }) =>
           </div>
         </div>
 
-        {/* Contenido */}
         <div className="p-6">
-          {/* Estado de carga */}
           {loading && (
             <div className="flex flex-col items-center justify-center py-12">
               <div className="animate-spin w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full mb-4"></div>
@@ -251,7 +236,6 @@ const CompanyModal = ({ companyId, isOpen, onClose, companyName, onViewJob }) =>
             </div>
           )}
 
-          {/* Estado de error */}
           {error && (
             <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
               <div className="text-red-500 text-4xl mb-4">⚠️</div>
@@ -266,10 +250,8 @@ const CompanyModal = ({ companyId, isOpen, onClose, companyName, onViewJob }) =>
             </div>
           )}
 
-          {/* Información de la empresa */}
           {!loading && !error && company && (
             <div className="space-y-6">
-              {/* Datos principales */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
                   <div className="flex items-center mb-2">
@@ -316,7 +298,6 @@ const CompanyModal = ({ companyId, isOpen, onClose, companyName, onViewJob }) =>
                 </div>
               </div>
 
-              {/* Empleos de la empresa */}
               <div>
                 <div className="flex items-center mb-4">
                   <Briefcase className="w-5 h-5 text-gray-600 mr-2" />
@@ -366,7 +347,6 @@ const CompanyModal = ({ companyId, isOpen, onClose, companyName, onViewJob }) =>
                 )}
               </div>
 
-              {/* Estadísticas */}
               <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-lg border border-blue-200">
                 <h3 className="text-lg font-semibold text-blue-900 mb-4">Estadísticas</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -400,7 +380,6 @@ const CompanyModal = ({ companyId, isOpen, onClose, companyName, onViewJob }) =>
           )}
         </div>
 
-        {/* Footer */}
         <div className="sticky bottom-0 bg-white border-t border-gray-200 p-6 rounded-b-xl">
           <div className="flex justify-end space-x-3">
             <button

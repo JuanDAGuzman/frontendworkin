@@ -6,3 +6,4 @@ export { useSearchFilters } from './useSearchFilters';
 export { useAppAnimations } from './useAppAnimations';
 export { usePagination } from './usePagination';
 export { useJobPortal } from './useJobPortal';
+export { useAuth } from './useAuth';

@@ -18,16 +18,13 @@ const JobModal = ({ job, isOpen, onClose, onViewJob }) => {
   const backdropRef = useRef(null);
   const { animateIn, animateOut } = useAnimations();
 
-  // Estado para el modal de empresa
   const [isCompanyModalOpen, setIsCompanyModalOpen] = useState(false);
 
   useEffect(() => {
     if (isOpen && modalRef.current && backdropRef.current) {
-      // Animación de entrada del backdrop
       backdropRef.current.style.opacity = "0";
       animateIn(backdropRef.current, 0);
 
-      // Animación de entrada del modal
       modalRef.current.style.opacity = "0";
       modalRef.current.style.transform = "scale(0.9) translateY(-20px)";
 
@@ -35,7 +32,6 @@ const JobModal = ({ job, isOpen, onClose, onViewJob }) => {
         animateIn(modalRef.current, 100);
       }, 100);
 
-      // Prevenir scroll del body
       document.body.style.overflow = "hidden";
     }
 
@@ -46,7 +42,6 @@ const JobModal = ({ job, isOpen, onClose, onViewJob }) => {
 
   const handleClose = () => {
     if (modalRef.current && backdropRef.current) {
-      // Animación de salida
       animateOut(modalRef.current, () => {
         animateOut(backdropRef.current, onClose);
       });
@@ -90,12 +85,9 @@ const JobModal = ({ job, isOpen, onClose, onViewJob }) => {
   const handleViewJobFromCompany = (selectedJob) => {
     console.log("🔄 Switching from company modal to job modal:", selectedJob);
 
-    // Cerrar el modal de empresa
     setIsCompanyModalOpen(false);
 
-    // Esperar un poco para que se cierre el modal de empresa
     setTimeout(() => {
-      // Llamar la función del componente padre para cambiar el empleo
       if (onViewJob) {
         onViewJob(selectedJob);
       }
@@ -126,7 +118,6 @@ const JobModal = ({ job, isOpen, onClose, onViewJob }) => {
           aria-modal="true"
           aria-labelledby="modal-title"
         >
-          {/* Header del modal */}
           <div className="sticky top-0 bg-white border-b border-gray-200 p-6 rounded-t-xl z-10">
             <div className="flex justify-between items-start">
               <div className="flex-1 pr-4">
