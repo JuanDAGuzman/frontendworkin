@@ -73,9 +73,6 @@ const Navbar = ({
       <div className="max-w-6xl mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className={`w-8 h-8 bg-gradient-to-br ${getUserColor()} rounded-lg flex items-center justify-center`}>
-              <span className="text-white font-bold text-sm">W</span>
-            </div>
             <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
               WorkIn
             </h1>
